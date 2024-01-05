@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.Toastify__toast-container {
+    width: 100% !important;
+    margin-top: 30px !important;
+    max-height: 30px !important;
+    height: fit-content !important;
+    display: flex !important;
+    /* flex-direction: column; */
+    justify-content: center !important;
+    align-content: center !important;
+    align-items: center !important;
+}
+
+/** Classes for the displayed toast **/
+.Toastify__toast {
+    display: flex !important;
+    /* flex-direction: column; */
+    justify-content: center !important;
+    align-content: center !important;
+    align-items: center !important;
+    background: white !important;
+    color: #1D1D1D !important;
+    width: fit-content !important;
+    min-height : fit-content !important;
+    /* height: 10 !important; */
+    padding: 0 !important;
+    border-radius: 16px !important;
+}
+
+.Toastify__toast--rtl {
+    padding: 0 !important;
+}
+
+.Toastify__toast-body {
+    display: flex !important;
+    justify-content: center !important;
+    align-content: center !important;
+    align-items: center !important;
+    padding: 7px 14px !important;
+    margin: 0 !important;
+}
+
+/** Used to position the icon **/
+.Toastify__toast-icon {
+    display: flex !important;
+    justify-content: center !important;
+    align-content: center !important;
+    align-items: center !important;
+    margin: auto 5px auto 0px !important;
+    width: 18px !important;
+    height: 18px !important;
+    max-width: 18px !important;
+    max-height: 18px !important;
+}
+
+.Toastify__close-button{
+    display: none !important;
+    visibility: hidden !important;
+    /* display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center; */
+}
+
+input,
+textarea,
+button,
+select,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
