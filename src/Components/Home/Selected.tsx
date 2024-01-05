@@ -11,7 +11,6 @@ export default function Selected() {
     handleAddPassenger,
     handleRemoveItem,
     total,
-    drinks,
     passengerMeals,
     passengerCount,
   } = useCart();
@@ -49,7 +48,7 @@ export default function Selected() {
               >
                 <span>P.{passengerNumber}</span>
                 {passengerMeals && passengerMeals[passengerNumber - 1] ? (
-                  <>{passengerMeals[passengerNumber - 1].title} + {drinks[passengerNumber - 1]}</>
+                  <>{passengerMeals[passengerNumber - 1].title}</>
                 ) : (
                   <>Select a Meal</>
                 )}

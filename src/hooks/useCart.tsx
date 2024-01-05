@@ -1,4 +1,4 @@
-import { IMeals } from "@/api/meals/MealsInterface";
+import { IDrink, IMeals } from "@/api/meals/MealsInterface";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useToast } from "./useToast";
 
@@ -6,9 +6,8 @@ export interface ICartContext {
   passengerCount: number;
   total: number;
   passengerMeals: IMeals[];
-  drinks: string[];
   handleAddPassenger: () => void;
-  handleSelectMeal: (meal: IMeals, drink: string) => void;
+  handleSelectMeal: (meal: IMeals, drink: IDrink) => void;
   handleRemoveItem: (passengerNumber: number) => void;
 }
 
@@ -27,7 +26,7 @@ export const useCart = (): ICartContext => {
 export const CartProvider: any = ({ children }: any) => {
   const [passengerCount, setPassengerCount] = useState(1);
   const [passengerMeals, setPassengerMeals] = useState<IMeals[] | []>([]);
-  const [drinks, setDrinks] = useState<string[] | []>([]);
+  const [drinks, setDrinks] = useState<IDrink[] | []>([]);
   const { toastError } = useToast();
   const [total, setTotal] = useState(0);
 
@@ -36,16 +35,16 @@ export const CartProvider: any = ({ children }: any) => {
     setPassengerCount(newPassengerCount);
   };
 
-  const handleSelectMeal = (meal: IMeals, drink: string) => {
+  const handleSelectMeal = (meal: IMeals, drink: IDrink) => {
     if (passengerMeals.length === passengerCount) {
       toastError("Add more passenger's before selecting meals");
     } else {
       let updateSelectedMeals = [...passengerMeals];
-      updateSelectedMeals.push(meal);
-      setTotal(total + meal.price);
-      setPassengerMeals(updateSelectedMeals);
       let updateSelectedDrinks = [...drinks];
+      updateSelectedMeals.push(meal);
       updateSelectedDrinks.push(drink);
+      setTotal(total + meal.price + drink.price);
+      setPassengerMeals(updateSelectedMeals);
       setDrinks(updateSelectedDrinks);
     }
   };
@@ -53,15 +52,16 @@ export const CartProvider: any = ({ children }: any) => {
   const handleRemoveItem = (passengerNumber: number) => {
     let updateSelectedMeals = [...passengerMeals];
     let updateSelectedDrinks = [...drinks];
+
     if (updateSelectedMeals.length >= passengerNumber) {
       const removedMeal = updateSelectedMeals.splice(passengerNumber - 1, 1)[0];
-      updateSelectedDrinks.splice(passengerNumber - 1, 1)[0];
+      const removedDrink = updateSelectedDrinks.splice(
+        passengerNumber - 1,
+        1,
+      )[0];
       setPassengerMeals(updateSelectedMeals);
-      
       setDrinks(updateSelectedDrinks);
-
-      setTotal(total - removedMeal.price);
-
+      setTotal(total - removedMeal.price - removedDrink.price);
       setPassengerCount((prevCount) => prevCount - 1);
     }
   };
@@ -72,7 +72,6 @@ export const CartProvider: any = ({ children }: any) => {
     passengerMeals,
     handleAddPassenger,
     handleSelectMeal,
-    drinks,
     handleRemoveItem,
   };
 

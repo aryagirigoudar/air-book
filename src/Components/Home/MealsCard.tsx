@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { IDrink, IMeals } from "@/api/meals/MealsInterface";
 import Image from "next/image";
-import Beer from "../../assets/Drinks/beer.jpg";
+import Beer from "../../assets/Drinks/Beer.jpg";
 import Vine from "../../assets/Drinks/Vine.jpg";
-import Juice from "../../assets/Drinks/juice.jpg";
+import Juice from "../../assets/Drinks/Juice.jpg";
 import { useCart } from "@/hooks/useCart";
 import { useToast } from "@/hooks/useToast";
 
 export default function MealsCard({ meal }: { meal: IMeals }) {
   const [selectedDrink, setSelectedDrink] =
     useState<string>("Select From Below");
-  const [selectedDrinkId, setSelectedDrinkId] = useState<string>();
+  const [selectedDrinkId, setSelectedDrinkId] = useState<IDrink>();
   const { handleSelectMeal } = useCart();
-  const { toastError } = useToast();
+  const { toastInfo } = useToast();
   function getImage(title: string) {
     if (title == "Beer") {
       return Beer;
@@ -56,15 +56,15 @@ export default function MealsCard({ meal }: { meal: IMeals }) {
               return (
                 <button
                   key={drink.id}
+                  disabled={selectedDrinkId ? true : false}
                   onClick={() => {
-                    setSelectedDrinkId(drink.id + meal.id);
+                    setSelectedDrinkId(drink);
                     setSelectedDrink(drink.title);
                   }}
                 >
                   <Image
                     className={`rounded-lg object-cover py-2 transition-all duration-300 hover:scale-105 md:max-h-[50px] md:min-h-[50px] ${
-                      drink.id + meal.id === selectedDrinkId &&
-                      "border border-gray-950"
+                      drink.title === selectedDrink && "border border-gray-950"
                     }`}
                     src={getImage(drink.title)}
                     alt="Drink image"
@@ -84,13 +84,11 @@ export default function MealsCard({ meal }: { meal: IMeals }) {
             </span>
             <button
               onClick={() => {
-                if(!selectedDrinkId){
-                  toastError("Select the drink")
+                if (!selectedDrinkId) {
+                    toastInfo("Please select a drink for the meal");
+                } else {
+                  handleSelectMeal(meal,selectedDrinkId);
                 }
-                else{
-                  handleSelectMeal(meal, selectedDrink);
-                }
-
               }}
               className="rounded-md border border-gray-500 px-5 py-2 text-black hover:bg-gray-500 hover:text-white"
             >
